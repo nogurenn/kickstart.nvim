@@ -3,9 +3,12 @@
 --
 -- See the kickstart.nvim README for more information
 
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.softtabstop = 4
+-- vim.opt.tabstop = 4
+-- vim.opt.shiftwidth = 4
+-- vim.softtabstop = 4
+
+-- Center cursor after returning to tag
+vim.keymap.set('n', '<C-t>', '<C-t>zz', { desc = 'Return to tag and center cursor' })
 
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll down half page and center cursor' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll up half page and center cursor' })
