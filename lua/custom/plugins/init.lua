@@ -3,9 +3,11 @@
 --
 -- See the kickstart.nvim README for more information
 
--- vim.opt.tabstop = 4
--- vim.opt.shiftwidth = 4
--- vim.softtabstop = 4
+vim.g.editorconfig = true
+
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.softtabstop = -1
 
 -- Center cursor after returning to tag
 vim.keymap.set('n', '<C-t>', '<C-t>zz', { desc = 'Return to tag and center cursor' })
@@ -63,14 +65,43 @@ vim.api.nvim_create_autocmd('LspAttach', {
           golang_organize_imports(bufnr)
         end,
       })
+    elseif client.name == 'ruff' then
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        pattern = '*.py',
+        group = vim.api.nvim_create_augroup('LspRuffFormatOnSave.' .. bufnr, {}),
+        callback = function()
+          vim.lsp.buf.format { async = false }
+        end,
+      })
     end
   end,
 })
 
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('lsp_attach_disable_ruff_hover', { clear = true }),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client == nil then
+      return
+    end
+    if client.name == 'ruff' then
+      -- Disable hover in favor of Pyright
+      client.server_capabilities.hoverProvider = false
+    end
+  end,
+  desc = 'LSP: Disable hover capability from Ruff',
+})
+
 return {
+  -- { 'karloskar/poetry-nvim' },
+  -- {
+  -- 'pmizio/typescript-tools.nvim',
+  -- dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+  -- opts = {},
+  -- },
   {
-    'pmizio/typescript-tools.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+    'yutkat/confirm-quit.nvim',
+    event = 'CmdlineEnter',
     opts = {},
   },
   {

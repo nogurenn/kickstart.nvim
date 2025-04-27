@@ -153,7 +153,9 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  {
+    'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  },
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -332,6 +334,9 @@ require('lazy').setup({
             '.nvm/',
             '.vscode%-server/',
             '.docker/buildx',
+            '.pyc',
+            '.venv/',
+            '.next/',
           },
         },
         pickers = {
@@ -618,7 +623,43 @@ require('lazy').setup({
             },
           },
         },
-        -- pyright = {},
+        ruff = {
+          -- on_attach = function(client, bufnr)
+          --   vim.api.nvim_create_autocmd('BufWritePre', {
+          --     group = vim.api.nvim_create_augroup('RuffFormatOnSave', { clear = true }),
+          --     buffer = bufnr,
+          --     callback = function()
+          --       vim.lsp.buf.format { bufnr = bufnr, async = true }
+          --     end,
+          --   })
+          -- end,
+          capabilities = {
+            general = {
+              positionEncodings = { 'utf-16' },
+            },
+          },
+        },
+        pyright = {
+          capabilities = (function()
+            local capabilities = vim.lsp.protocol.make_client_capabilities()
+            capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
+            return capabilities
+          end)(),
+          settings = {
+            pyright = {
+              -- Using `ruff` as linter, organize imports and formatter
+              disableOrganizeImports = true,
+            },
+            python = {
+              analysis = {
+                ignore = { '*' },
+                useLibraryCodeForTypes = true,
+                diagnosticSeverityOverrides = {},
+                typeCheckingMode = 'basic',
+              },
+            },
+          },
+        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -626,9 +667,8 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
+        ts_ls = {},
         --
-
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -712,6 +752,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        python = { 'ruff' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
