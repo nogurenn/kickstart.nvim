@@ -181,6 +181,7 @@ require('lazy').setup({
   -- See `:help gitsigns` to understand what the configuration keys do
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
+    version = '1.0.x',
     opts = {
       signs = {
         add = { text = '+' },
@@ -208,6 +209,7 @@ require('lazy').setup({
 
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
+    version = '3.x',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
       -- delay between pressing a key and opening which-key (milliseconds)
@@ -269,6 +271,7 @@ require('lazy').setup({
 
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
+    branch = '0.1.x',
     event = 'VimEnter',
     dependencies = {
       'nvim-lua/plenary.nvim',
@@ -416,6 +419,7 @@ require('lazy').setup({
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
+    version = '2.1.x',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
@@ -722,6 +726,7 @@ require('lazy').setup({
   },
   { -- Autoformat
     'stevearc/conform.nvim',
+    version = '9.*',
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
     keys = {
@@ -873,6 +878,7 @@ require('lazy').setup({
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
+    version = '0.15.*',
     config = function()
       -- Better Around/Inside textobjects
       --
@@ -910,6 +916,7 @@ require('lazy').setup({
   },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    version = '0.9.*',
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`

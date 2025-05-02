@@ -5,6 +5,7 @@
 return {
   {
     'lewis6991/gitsigns.nvim',
+    version = '1.0.x',
     opts = {
       on_attach = function(bufnr)
         local gitsigns = require 'gitsigns'
